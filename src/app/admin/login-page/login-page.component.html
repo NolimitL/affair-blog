@@ -1,0 +1,56 @@
+<form class="card" [formGroup]="form" (ngSubmit)="submit()">
+  <h3>Login to admin panel</h3>
+  <div class="alert alert-danger" *ngIf="auth.errorMessage$ | async as error"
+  >{{error}}</div>
+  <div class="alert alert-info" *ngIf="loginMessage"
+  >{{loginMessage}}</div>
+
+  <div
+    class="form-control"
+    [ngClass]="{invalid: form.get('email').invalid && form.get('email').touched}"
+  >
+    <label for="email">Email:</label>
+    <input id="email" type="email"
+      formControlName="email"
+    >
+    <div class="validation"
+      *ngIf="form.get('email').invalid && form.get('email').touched"
+    >
+      <small  *ngIf="form.get('email').errors.email"
+      >Write correct email<br/></small>
+      <small  *ngIf="form.get('email').errors.required"
+      >Email field must not be empty<br/></small>
+      <small  *ngIf="form.get('email').errors.notCorrectEmail"
+      >Email isn't correct, missing <strong>. (point)</strong></small>
+    </div>
+  </div>
+
+  <div
+    class="form-control"
+    [ngClass]="{invalid: form.get('password').invalid && form.get('password').touched}"
+  >
+    <label for="password">Password:</label>
+    <input id="password" type="password"
+      formControlName="password"
+    >
+    <!-- <pre>{{form.get('password').errors | json}}</pre> -->
+    <div class="validation"
+      *ngIf="form.get('password').invalid && form.get('password').touched"
+    >
+      <small *ngIf="form.get('password').errors.required"
+      >Password field must not be empty</small>
+      <small *ngIf="form.get('password').errors.minlength"
+      >Required length: <strong>{{form.get('password').errors.minlength.requiredLength}}</strong> symbols.
+      Your password: <strong>{{form.get('password').errors.minlength.actualLength}}</strong> symbols.<br/>
+      </small>
+      <small *ngIf="form.get('password').errors.absenceSymbol"
+      >Your password must contain at least one of the special symbols.</small>
+    </div>
+  </div>
+
+  <button
+    [disabled]="form.invalid || form.pending || submitted"
+    type="submit"
+    class="btn btn-primary"
+  >Submit</button>
+</form>
